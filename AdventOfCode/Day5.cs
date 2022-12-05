@@ -64,6 +64,9 @@ namespace AdventOfCode
 
     public class Move
     {
+        private readonly int _from;
+        private readonly int _to;
+
         public Move(string str)
         {
             var list = new List<int>();
@@ -79,21 +82,19 @@ namespace AdventOfCode
             }
 
             Count = list[0];
-            From = list[1];
-            To = list[2];
+            _from = list[1];
+            _to = list[2];
         }
 
         public int Count { get; set; }
-        public int From { get; set; }
-        public int To { get; set; }
 
         public void MoveCrate(List<List<string>> crates)
         {
-            var from = crates[From - 1];
+            var from = crates[_from - 1];
             var lastItem = from.Last();
             from.RemoveAt(from.Count - 1);
 
-            var to = crates[To - 1];
+            var to = crates[_to - 1];
             to.Add(lastItem);
         }
     }
