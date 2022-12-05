@@ -9,7 +9,9 @@ namespace AdventOfCode
         public Day5()
         {
             Console.WriteLine("--- Day 5 ---");
+
             Part1();
+            Part2();
         }
 
         private void Part1()
@@ -23,7 +25,7 @@ namespace AdventOfCode
 
                 for (var j = 0; j < move.Count; j++)
                 {
-                    move.MoveCrate(crates);
+                    move.MoveCratePart1(crates);
                 }
             }
 
@@ -32,6 +34,27 @@ namespace AdventOfCode
             {
                 Console.Write(crate.LastOrDefault());
             }
+            Console.WriteLine();
+        }
+
+        private void Part2()
+        {
+            var crates = LoadCrates();
+            var lines = File.ReadLines(_filename).ToList();
+            for (var i = 10; i < lines.Count; i++)
+            {
+                var line = lines[i];
+                var move = new Move(line);
+
+                move.MoveCratePart2(crates);
+            }
+
+            Console.Write("[Part 2]: ");
+            foreach (var crate in crates)
+            {
+                Console.Write(crate.LastOrDefault());
+            }
+            Console.WriteLine();
         }
 
         private List<List<string>> LoadCrates()
@@ -88,7 +111,7 @@ namespace AdventOfCode
 
         public int Count { get; set; }
 
-        public void MoveCrate(List<List<string>> crates)
+        public void MoveCratePart1(List<List<string>> crates)
         {
             var from = crates[_from - 1];
             var lastItem = from.Last();
@@ -96,6 +119,16 @@ namespace AdventOfCode
 
             var to = crates[_to - 1];
             to.Add(lastItem);
+        }
+
+        public void MoveCratePart2(List<List<string>> crates)
+        {
+            var from = crates[_from - 1];
+            var lastItems = Enumerable.Reverse(from).Take(Count).Reverse().ToList();
+            from.RemoveRange(from.Count - Count, Count);
+
+            var to = crates[_to - 1];
+            to.AddRange(lastItems);
         }
     }
 }
